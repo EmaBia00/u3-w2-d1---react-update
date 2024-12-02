@@ -1,36 +1,28 @@
-import { Component } from "react";
+import { Row, Col, Container } from "react-bootstrap";
 import SingleBook from "./SingleBook";
-import { Col, Row, Container, Form } from "react-bootstrap";
+import CommentArea from "./CommentArea";
+import { Component } from "react";
 
 class BookList extends Component {
-  state = {
-    searchQuery: ""
-  };
-
-  filterBooks = () => {
-    return this.props.books.filter((book) => book.title.toLowerCase().includes(this.state.searchQuery.toLowerCase()));
-  };
-
-  handleSearchChange = (e) => {
-    this.setState({ searchQuery: e.target.value });
-  };
-
   render() {
+    const { books, selectedBookAsin, onBookSelect } = this.props;
+
     return (
       <Container className="mt-5">
         <h2 className="text-center mb-2">Esplora i nostri libri fantasy</h2>
-        <Form className="mb-4">
-          <Form.Group controlId="search">
-            <Form.Label>Cerca un libro</Form.Label>
-            <Form.Control type="text" placeholder="Inserisci il titolo" value={this.state.searchQuery} onChange={this.handleSearchChange} />
-          </Form.Group>
-        </Form>
         <Row>
-          {this.filterBooks().map((book) => (
-            <Col key={book.asin} xs={12} md={6} lg={4} xl={3} className="mb-4">
-              <SingleBook book={book} />
-            </Col>
-          ))}
+          <Col xs={6} md={8}>
+            <Row>
+              {books.map((book) => (
+                <Col key={book.asin} xs={12} md={6} lg={3} className="mb-4">
+                  <SingleBook book={book} isSelected={book.asin === selectedBookAsin} onSelect={onBookSelect} />
+                </Col>
+              ))}
+            </Row>
+          </Col>
+          <Col xs={6} md={4}>
+            {selectedBookAsin && <CommentArea asin={selectedBookAsin} />}
+          </Col>
         </Row>
       </Container>
     );

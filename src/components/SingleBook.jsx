@@ -1,41 +1,28 @@
 import { Component } from "react";
-import { Card, Container, Row, Col } from "react-bootstrap";
-import CommentArea from "./CommentArea";
+import { Card } from "react-bootstrap";
 
 class SingleBook extends Component {
-  state = {
-    selected: false
-  };
-
   handleSelect = () => {
-    this.setState((prevState) => ({
-      selected: !prevState.selected
-    }));
+    const { book, onSelect } = this.props;
+    onSelect(book.asin);
   };
 
   render() {
-    const { book } = this.props;
-    const { selected } = this.state;
+    const { book, isSelected } = this.props;
 
     return (
-      <Card className={`card-custom ${selected ? "border-danger border-3" : ""}`}>
-        <Card.Img variant="top" src={book.img} alt={book.title} style={{ cursor: "pointer" }} onClick={this.handleSelect} />
+      <Card
+        className={`cursor-pointer ${isSelected ? "border-danger border-3" : "border-light"} shadow-sm`}
+        onClick={this.handleSelect}
+        style={{ width: "100%", cursor: "pointer" }}
+      >
+        <Card.Img variant="top" src={book.img} alt={book.title} />
         <Card.Body>
           <Card.Title>{book.title}</Card.Title>
           <Card.Text>
             <strong>Price:</strong> ${book.price}
           </Card.Text>
         </Card.Body>
-
-        {selected && (
-          <Container className="mt-4">
-            <Row>
-              <Col>
-                <CommentArea book={book} />
-              </Col>
-            </Row>
-          </Container>
-        )}
       </Card>
     );
   }

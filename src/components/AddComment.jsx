@@ -14,12 +14,12 @@ class AddComment extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     const { comment, rate } = this.state;
-    const { book, onCommentAdded } = this.props;
+    const { asin, onCommentAdded } = this.props;
 
     const newComment = {
       comment,
       rate,
-      elementId: book.asin
+      elementId: asin
     };
 
     try {
@@ -42,7 +42,7 @@ class AddComment extends Component {
 
   render() {
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form className="border border-1 p-3 mt-2 rounded" onSubmit={this.handleSubmit}>
         <Form.Group className="mb-3" controlId="comment">
           <Form.Label>Your Comment</Form.Label>
           <Form.Control type="text" name="comment" value={this.state.comment} onChange={this.handleInputChange} placeholder="Write your comment" />
